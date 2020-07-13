@@ -6,23 +6,54 @@
   box-sizing: border-box;
 }
 
+body{
+  background-color: darkgreen;
+}
 
+/* schedina contatto */
+
+.contact-style{
+  height: 100%;
+}
+
+.contact-style img{
+  height: 100%;
+}
+
+.contact-style>div{
+  padding-left: 10px;
+  display: inline-block;
+  vertical-align: top;
+}
+
+/* sezioni icone */
+
+.icons a{
+  color: grey;
+  font-size: 18px;
+  padding: 0 8px;
+}
+
+.icons a:hover{
+  color: #000;
+}
+
+/* PARTE PRINCIPALE */
 .container{
   display: flex;
   padding: 2%;
   height: 100vh;
+  align-items: stretch;
 }
 
 
 
-/* PARTE SINISTRA --- CONTATTI */
+/* ---------------------   PARTE SINISTRA --- CONTATTI */
 
 #contacts {
   width: 30%;
-
-  /* debug */
-  background-color: grey;
   height: 100%;
+  background-color: #fff;
 }
 
 /* contatto attivo */
@@ -99,24 +130,132 @@ padding: 4px;
   border: none;
 }
 
-/* PARTE DESTRA ---- CHAT */
+/* lista contatti */
+
+#contact-list{
+  list-style: none;
+}
+
+#contact-list li a{
+  height: 60px;
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  background-color: #fff;
+  border-bottom: 1px solid grey;
+  text-decoration: none;
+  color: grey;
+}
+
+#contact-list li a h3{
+  color: #000;
+}
+
+/* ------------------  PARTE DESTRA ---- CHAT */
+
 #chat{
   width: 70%;
   /* debug */
   height: 100%;
 }
 
+/* header */
+
 #chat .header{
   height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
   /* debug */
   background-color: lightgrey;
 }
 
-#chat .messages{
+
+/* messaggi */
+
+#chat #messages{
   height: calc(100% - 120px);
   background: url("../img/chat-sfondo.jpg");
+  padding: 15px 5%;
 }
 
-#chat .write-new{
+/* messaggi inviati */
+
+#messages .send{
+  text-align: right;
+  padding: 10px 0;
+}
+
+#messages .send .msg-text{
+  position: relative;
+  display: inline-block;
+  padding: 15px;
+  background-color: green;
+  border-radius: 5px;
+}
+
+#messages .received .msg-text{
+  position: relative;
+  display: inline-block;
+  padding: 15px;
+  background-color: #fff;
+  border-radius: 5px;
+}
+
+#messages span.time{
+  font-size: 8px;
+  color: lightgrey;
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+}
+
+
+/* form invio nuovi messaggi */
+#chat #write-new{
   height: 60px;
+  padding: 10px;
+  background-color: lightpink;
+}
+
+#chat #write-new{
+  display: flex;
+  align-items: center;
+}
+
+#chat #write-new .icons{
+  width: 10%;
+  text-align: center;
+}
+
+#chat #write-new .icons a{
+  font-size: 22px;
+  color: darkgrey;
+}
+
+#chat #write-new .input-msg{
+  width: 80%;
+  height: 100%;
+  position: relative;
+}
+
+#chat #write-new .input-msg input{
+  width: 100%;
+  height: 100%;
+  padding: 0 10px;
+  border: none;
+  border-radius: 5px;
+}
+
+#chat #write-new #send-btn{
+  display: none;
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  font-size: 25px;
+  padding: 10px;
 }
