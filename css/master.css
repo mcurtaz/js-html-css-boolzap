@@ -180,9 +180,15 @@ padding: 4px;
   height: calc(100% - 120px);
   background: url("../img/chat-sfondo.jpg");
   padding: 15px 5%;
+  overflow-y: auto;
 }
 
-/* messaggi inviati */
+/* template di messaggio nascosto da clonare in js */
+#messages .template{
+  display:none;
+}
+
+/* css per messaggi sia inviati che ricevuti */
 
 #messages .send{
   text-align: right;
@@ -251,7 +257,7 @@ padding: 4px;
 }
 
 #chat #write-new #send-btn{
-  display: none;
+  opacity: 0;
   position: absolute;
   top: 50%;
   right: 20px;
