@@ -1,0 +1,92 @@
+/* regole generali */
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+.container{
+  display: flex;
+  padding: 2%;
+  height: 100vh;
+}
+
+
+
+/* PARTE SINISTRA --- CONTATTI */
+
+#contacts {
+  width: 30%;
+
+  /* debug */
+  background-color: grey;
+  height: 100%;
+}
+
+/* contatto attivo */
+
+#active-contact{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 60px;
+  border-right: 1px solid grey;
+  padding: 10px;
+  /* debug */
+  background-color: lightgrey;
+}
+
+#active-contact img{
+  height: 100%;
+}
+
+/* alert */
+
+#alert {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 10px;
+  background-color: lightblue;
+}
+
+#alert .bell-wrapper{
+  font-size: 20px;
+  color: lightblue;
+  background-color: white;
+  padding: 10px;
+  text-align: center;
+  border-radius: 50%;
+}
+
+#alert>div:nth-child(2){
+  padding: 10px;
+}
+
+#alert a{
+  color: grey;
+}
+
+/* PARTE DESTRA ---- CHAT */
+#chat{
+  width: 70%;
+  /* debug */
+  height: 100%;
+}
+
+#chat .header{
+  height: 60px;
+  /* debug */
+  background-color: lightgrey;
+}
+
+#chat .messages{
+  height: calc(100% - 120px);
+  background: url("../img/chat-sfondo.jpg");
+}
+
+#chat .write-new{
+  height: 60px;
+}
