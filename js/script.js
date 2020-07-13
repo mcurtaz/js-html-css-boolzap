@@ -27,6 +27,14 @@ function sendNewMsg(){
 
   newMsg.find(".new-text").text(msgText); // .find() trova nei discendenti del div.template quello con classe .new-text e lo sovrascrive col messaggio dell'utente
 
+  // Inserimento orario corretto
+
+  var d = new Date();
+
+  var ora = d.getHours() + ":" + d.getMinutes();
+
+  newMsg.find(".time").text(ora);
+
   $("#messages").append(newMsg); // con append il messaggio clonato e modificato viene inserito nell'html
 
 };
@@ -41,14 +49,20 @@ function init(){
 
   showSendButton();
 
-  $("#send-btn").click(sendNewMsg); // il click sul bottone send triggera la funzione per mandare nuovo Messaggio
+  $("#send-btn").click(function(){
+
+    if($("#new-msg").val() != ""){ // Il msg viene inviato solo se c'è scritto qualcosa. Non si inviano msg vuoti
+      sendNewMsg();
+    }
+  }); // il click sul bottone send triggera la funzione per mandare nuovo Messaggio
 
   $("#new-msg").keyup(function(event){ // quando c'è focus su #new-msg che è l'input dove si scrivono i msg. e si preme il tasto con keycode 13 (invio) si avvia la funzione sendNewMsg che invia il nuovo messaggio.
     console.log(event.which);
-    if (event.which == 13) {
+    if (event.which == 13 && $("#new-msg").val() != "" ) { // aggiunta la condizione per cui se il messaggio è vuoto non viene inviato
       sendNewMsg();
     }
   });
+
 }
 
 
