@@ -77,16 +77,31 @@ function activeSearchbar(){
   $(".contact-name").each(checkName); // la funzione scorre tutti gli elementi con classe contact-name e su ognuno esegue la funzione checkName che verificherà la corrispondenza tra l'input della barra e il nome del contatto
 }
 
+// la funzione controlla corrispondenza tra input della barra di ricerca contatti e i nomi contatto
 function checkName(){
 
   var input = $("#contact-searchbar").val().toLowerCase(); // la variabile input sono i caratteri inseriti nella searchbar. .toLowerCase() ci evita problemi legati al case sensitive
 
-  var contact = $(this).text().toLowerCase();
+  var contact = $(this).text().toLowerCase(); // girando col .each() della funzione activeSearchbar $(this) è di volta in volta un nome di contatto (sta scorrendo tutti i .contact-name).
 
-  console.log("input " + input);
-  console.log("contact " + contact);
+  if(contact.startsWith(input)){ // se il nome di contatto comincia con (funzione startsWith di JS) la stringa input allora mostro (.show) il li genitore di $(this) (questo specifico elemento con classe .contact-name) altrimenti nascondo il li genitore.
+    $(this).parents("li").show();
+
+  } else {
+
+    $(this).parents("li").hide();
+  }
+
+
+// Non ho bisogno di considerare il caso specifico stringa vuota all'input perchè da solo startWith restituisce true con input = stringa vuota.
+
+console.log("input " + input);
+console.log("contact " + contact);
+console.log("starsWith " + contact.startsWith(input));
 }
 
+
+// --------------------   funzione INIT
 function init(){
 
   showSendButton();
@@ -102,7 +117,9 @@ function init(){
   }); // il click sul bottone send triggera la funzione per mandare nuovo Messaggio
 
   $("#new-msg").keyup(function(event){ // quando c'è focus su #new-msg che è l'input dove si scrivono i msg. e si preme il tasto con keycode 13 (invio) si avvia la funzione sendNewMsg che invia il nuovo messaggio.
-    console.log(event.which);
+
+    //console.log(event.which);
+
     if (event.which == 13 && $("#new-msg").val() != "" ) { // aggiunta la condizione per cui se il messaggio è vuoto non viene inviato
       sendNewMsg(); // funzione che invia un nuovo Messaggio
 

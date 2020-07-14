@@ -217,6 +217,7 @@ padding: 4px;
 }
 
 #messages .msg-text{
+  text-align: left;
   position: relative;
   max-width: 200px;
   display: inline-block;
