@@ -55,6 +55,7 @@ function sendReplyMsg(){
 
   }, 3000);
 }
+
 // funzione che restituisce l'ora
 
 function getTime(){
@@ -70,8 +71,21 @@ function getTime(){
   return d.getHours() + ":" + d.getMinutes();
 }
 
+// funzione che rende dinamica la searchbar dei contatti
 
+function activeSearchbar(){
+  $(".contact-name").each(checkName); // la funzione scorre tutti gli elementi con classe contact-name e su ognuno esegue la funzione checkName che verificherà la corrispondenza tra l'input della barra e il nome del contatto
+}
 
+function checkName(){
+
+  var input = $("#contact-searchbar").val().toLowerCase(); // la variabile input sono i caratteri inseriti nella searchbar. .toLowerCase() ci evita problemi legati al case sensitive
+
+  var contact = $(this).text().toLowerCase();
+
+  console.log("input " + input);
+  console.log("contact " + contact);
+}
 
 function init(){
 
@@ -94,6 +108,11 @@ function init(){
 
       sendReplyMsg(); // funzione che invia una risposta automatica
     }
+  });
+
+
+  $("#contact-searchbar").keyup(function(event){
+    activeSearchbar(); // la funzione si attiva ogni volta che viene premuto un tasto qualsiasi sulla tastiera
   });
 
 }
