@@ -17,6 +17,7 @@ body{
   z-index: -1;
   background-color: #009588;
 }
+
 /* schedina contatto */
 
 .contact-style{
@@ -49,7 +50,7 @@ body{
 
 .container{
   display: flex;
-  padding: 2%;
+  padding: 2% 8%;
   height: 100vh;
   align-items: stretch;
 }
@@ -84,6 +85,7 @@ body{
 /* alert */
 
 #alert {
+  height: 77px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -111,6 +113,7 @@ body{
 /* searchbar */
 
 #searchbar {
+  height: 53px;
   padding: 10px;
   background-color: #eaeaea;
 }
@@ -142,6 +145,8 @@ padding: 4px;
 
 #contact-list{
   list-style: none;
+  height: calc(100% - 77px - 60px - 53px); /* altezza totale meno le tre barre superiori*/
+  overflow-y: auto;
 }
 
 #contact-list li a{
@@ -187,36 +192,45 @@ padding: 4px;
 #chat #messages{
   height: calc(100% - 120px);
   background: url("../img/chat-sfondo.jpg");
-  padding: 15px 5%;
+  padding: 15px 12%;
   overflow-y: auto;
 }
 
+/* css per messaggi sia inviati che ricevuti */
+
+
 /* template di messaggio nascosto da clonare in js */
-#messages .template{
+
+.template{
   display:none;
 }
 
-/* css per messaggi sia inviati che ricevuti */
 
 #messages .send{
   text-align: right;
   padding: 10px 0;
 }
 
-#messages .send .msg-text{
+#messages .received{
+  text-align: left;
+  padding: 10px 0;
+}
+
+#messages .msg-text{
   position: relative;
+  max-width: 200px;
   display: inline-block;
-  padding: 15px;
+  padding: 14px 20px 14px 14px;
+  border-radius: 10px;
+  border: 1px solid #b1b1b1;
+}
+
+#messages .send .msg-text{
   background-color: #d5f9ba;
-  border-radius: 5px;
 }
 
 #messages .received .msg-text{
-  position: relative;
-  display: inline-block;
-  padding: 15px;
   background-color: #fff;
-  border-radius: 5px;
 }
 
 #messages span.time{
@@ -227,6 +241,40 @@ padding: 4px;
   bottom: 5px;
 }
 
+/* option panel dropdown */
+
+#messages .msg-text i.option-down{
+  display: none;
+  position: absolute;
+  top: 50%;
+  right: 5px;
+  transform: translateY(-40%);
+}
+
+#messages .msg-text:hover i.option-down{
+  display: block;
+}
+#messages .msg-text .option-panel{
+  display: none;
+  position: absolute;
+  top: calc(100% - 12px);
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #fff;
+  padding: 5px;
+  width: 85%;
+  min-width: 140px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+#messages .msg-text .option-panel ul{
+  list-style: none;
+}
+
+#messages .msg-text .option-panel li{
+  padding: 5px 0;
+}
 
 /* form invio nuovi messaggi */
 

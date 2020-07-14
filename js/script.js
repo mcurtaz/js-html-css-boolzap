@@ -61,6 +61,12 @@ function getTime(){
 
   var d = new Date();
 
+  if(d.getMinutes()<10){ // questo if evita che l'ora sia stampata con solo 1 cifra nei minuti ( es. 15:3 diventa 15:03)
+    var minutes = "0" + d.getMinutes();
+  } else{
+      var minutes = d.getMinutes();
+  }
+
   return d.getHours() + ":" + d.getMinutes();
 }
 
