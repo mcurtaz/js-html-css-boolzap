@@ -67,7 +67,7 @@ body{
 
 /* contatto attivo */
 
-#active-contact{
+#my-contact{
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -77,7 +77,7 @@ body{
   background-color: #eaeaea;
 }
 
-#active-contact img{
+#my-contact img{
   height: 100%;
 }
 

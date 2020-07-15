@@ -40,8 +40,6 @@ function init(){
 
   deleteMessage();
 
-
-
   // SEARCHBAR CONTATTI
 
 
@@ -89,19 +87,34 @@ function selectContact() {
 
     $(this).addClass("active"); // aggiungo la classe active sul contatto cliccato. Nella lista la classe active cambia solo il background-color. Così rimane visualizzato quale contatto è attualmente attivo
 
-    // istruzioni nella schermata chat
-
     var idContact = $(this).find(".contact").attr("data-id"); // salvo in una variabile il valore dell'attributo data-id del contatto cliccato che avrà una corrispondenza con un div .chat nel #messages
 
-    console.log(idContact);
+    // istruzioni nella schermata chat
 
-    $("#messages .chat.active").removeClass("active"); // rimuovo la classe active dalla chat attualmente attiva
+    chatChanges(idContact);
 
-    $('#messages .chat[data-id="'+idContact+'"]').addClass("active"); // do classe active alla chat con data-id corrispondente a quello cliccato nella lista contatti. la classe active cambia solo la proprietà display.
+    // istruzioni per la barra sopra la chat con il contatto attualmente attivo
 
-    console.log($('#messages .chat[data-id="'+idContact+'"]'));
+    var activeImg = $(this).find("img[alt=\"img profilo\"]").attr("src");
+
+    var activeName = $(this).find(".contact-name").text();
+
+    activeBarChanges(activeImg, activeName);
 
   });
+}
+
+function chatChanges(idContact) { // switch da una chat all'altra istruzione per la visualizzazione della chat
+
+  $("#messages .chat.active").removeClass("active"); // rimuovo la classe active dalla chat attualmente attiva
+
+  $('#messages .chat[data-id="'+idContact+'"]').addClass("active"); // do classe active alla chat con data-id corrispondente a quello cliccato nella lista contatti. la classe active cambia solo la proprietà display.
+}
+
+function activeBarChanges(activeImg, activeName){ // cambia immagine e nome visualizzate nella barra sopra la chat
+
+  $("#active-contact #active-contact-img").attr("src", activeImg);
+  $("#active-contact #active-contact-name").text(activeName);
 }
 // -----------     FUNZIONI CHAT - MESSAGGI
 
@@ -145,7 +158,7 @@ function sendReplyMsg(){
 
     $("#messages .active").append(newMsg); // con append il messaggio clonato e modificato viene inserito nell'html
 
-  }, 3000);
+  }, 1000);
 };
 
 
