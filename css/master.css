@@ -182,7 +182,6 @@ padding: 4px;
   justify-content: space-between;
   align-items: center;
   padding: 10px;
-  /* debug */
   background-color: #eaeaea;
 }
 
@@ -250,6 +249,7 @@ padding: 4px;
   top: 50%;
   right: 5px;
   transform: translateY(-40%);
+  cursor: pointer;
 }
 
 #messages .msg-text:hover i.option-down{
@@ -275,6 +275,11 @@ padding: 4px;
 
 #messages .msg-text .option-panel li{
   padding: 5px 0;
+  cursor: pointer;
+}
+
+#messages .msg-text .option-panel li:hover{
+  background-color:  #eaeaea;
 }
 
 /* form invio nuovi messaggi */

@@ -4,8 +4,11 @@ $(document).ready(init);
 // --------------------   funzione INIT
 function init(){
 
+  // GENERALI
   showSendButton();
 
+
+  // INVIA MESSAGGI
   $("#send-btn").click(function(){
 
     if($("#new-msg").val() != ""){ // Il msg viene inviato solo se c'è scritto qualcosa. Non si inviano msg vuoti
@@ -27,18 +30,33 @@ function init(){
     }
   });
 
+  // CANCELLA MESSAGGI
 
-  //$("#contact-searchbar").keyup(function(event){
-      activeSearchbar(); // la funzione si attiva ogni volta che viene premuto un tasto qualsiasi sulla tastiera
-  });  // Soluzione con each() e startWith()
+  showOptionPanel();
 
-    $("#contact-searchbar").keyup(function(event){ // soluzione con filter
-      conFilter();
-    });
-  }
+  deleteMessage();
 
 
+  // SEARCHBAR CONTATTI
 
+
+  // $("#contact-searchbar").keyup(function(event){  // Soluzione con each() e startsWith(). se invece che l'inizio del nome si vuole tener conto di un punto della stringa qualsiasi si può usare .includes()
+  //
+  //     activeSearchbar(); // la funzione si attiva ogni volta che viene premuto un tasto qualsiasi sulla tastiera
+  // });
+
+
+  $("#contact-searchbar").keyup(function(event){ // soluzione con filter
+    conFilter();
+  });
+
+
+
+
+};
+
+
+// ---------    GENERALI
 
 // funzione per mostrare il tasto invia
 function showSendButton(){
@@ -53,6 +71,9 @@ function showSendButton(){
 
 };
 
+
+
+// -----------     FUNZIONI CHAT - MESSAGGI
 
 // funzione che invia un nuovo Messaggio
 function sendNewMsg(){
@@ -95,7 +116,7 @@ function sendReplyMsg(){
     $("#messages").append(newMsg); // con append il messaggio clonato e modificato viene inserito nell'html
 
   }, 3000);
-}
+};
 
 
 
@@ -111,14 +132,31 @@ function getTime(){
   }
 
   return d.getHours() + ":" + d.getMinutes();
-}
+};
+
+// -----------  FUNZIONI MENU MESSAGGI
+
+function showOptionPanel(){
+  $(document).on("click", ".msg-text .option-down", function(){
+    console.log("click");
+    $(this).next(".option-panel").toggle();
+  });
+};
+
+function deleteMessage() {
+  $(document).on("click", ".option-panel .del-btn", function(){
+    $(this).parents(".message").remove();
+  });
+};
 
 
+
+// ---------      FUNZIONI PER LA SEARCHBAR DEI CONTATTI
 
 // funzione che rende dinamica la searchbar dei contatti
 function activeSearchbar(){
   $(".contact-name").each(checkName); // la funzione scorre tutti gli elementi con classe contact-name e su ognuno esegue la funzione checkName che verificherà la corrispondenza tra l'input della barra e il nome del contatto
-}
+};
 
 
 
@@ -143,11 +181,11 @@ function checkName(){
 console.log("input " + input);
 console.log("contact " + contact);
 console.log("starsWith " + contact.startsWith(input));
-}
+};
 
 
 
-// funzione prova con Filter
+// funzione equivalente a checkName ma utilizzando Filter
 function conFilter() {
 
   var input = $("#contact-searchbar").val().toLowerCase(); //questa variabile contiene la stringa value dell'input della searchbar
@@ -160,4 +198,4 @@ function conFilter() {
 
   });
 
-}
+};
