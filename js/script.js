@@ -8,6 +8,10 @@ function init(){
   showSendButton();
 
 
+  // SELEZIONE CONTATTO CHAT
+
+  selectContact();
+
   // INVIA MESSAGGI
   $("#send-btn").click(function(){
 
@@ -35,6 +39,7 @@ function init(){
   showOptionPanel();
 
   deleteMessage();
+
 
 
   // SEARCHBAR CONTATTI
@@ -72,7 +77,32 @@ function showSendButton(){
 };
 
 
+// ------------- SELEZIONA CONTATTO CHAT
 
+function selectContact() {
+
+  $("#contact-list>li>a").click(function(){ // evento sul click di un contatto
+
+    // istruzioni sulla lista contatti
+
+    $("#contact-list>li>a.active").removeClass("active"); // tolgo la classe active da qualsiasi contatto con classe active quindi il contatto precedentemente attivo
+
+    $(this).addClass("active"); // aggiungo la classe active sul contatto cliccato. Nella lista la classe active cambia solo il background-color. Così rimane visualizzato quale contatto è attualmente attivo
+
+    // istruzioni nella schermata chat
+
+    var idContact = $(this).find(".contact").attr("data-id"); // salvo in una variabile il valore dell'attributo data-id del contatto cliccato che avrà una corrispondenza con un div .chat nel #messages
+
+    console.log(idContact);
+
+    $("#messages .chat.active").removeClass("active"); // rimuovo la classe active dalla chat attualmente attiva
+
+    $('#messages .chat[data-id="'+idContact+'"]').addClass("active"); // do classe active alla chat con data-id corrispondente a quello cliccato nella lista contatti. la classe active cambia solo la proprietà display.
+
+    console.log($('#messages .chat[data-id="'+idContact+'"]'));
+
+  });
+}
 // -----------     FUNZIONI CHAT - MESSAGGI
 
 // funzione che invia un nuovo Messaggio
@@ -92,7 +122,7 @@ function sendNewMsg(){
 
   newMsg.find(".time").text(getTime); // utilizzo la funzione per stampare l'ora corretta
 
-  $("#messages").append(newMsg); // con append il messaggio clonato e modificato viene inserito nell'html
+  $("#messages .active").append(newMsg); // con append il messaggio clonato e modificato viene inserito nell'html
 
 };
 
@@ -113,7 +143,7 @@ function sendReplyMsg(){
 
     newMsg.find(".time").text(getTime); // utilizzo la funzione per stampare l'ora corretta
 
-    $("#messages").append(newMsg); // con append il messaggio clonato e modificato viene inserito nell'html
+    $("#messages .active").append(newMsg); // con append il messaggio clonato e modificato viene inserito nell'html
 
   }, 3000);
 };

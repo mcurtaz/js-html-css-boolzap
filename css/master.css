@@ -20,15 +20,15 @@ body{
 
 /* schedina contatto */
 
-.contact-style{
+.contact{
   height: 100%;
 }
 
-.contact-style img{
+.contact img{
   height: 100%;
 }
 
-.contact-style>div{
+.contact>div{
   padding-left: 10px;
   display: inline-block;
   vertical-align: top;
@@ -74,7 +74,6 @@ body{
   height: 60px;
   border-right: 1px solid #b1b1b1;
   padding: 10px;
-  /* debug */
   background-color: #eaeaea;
 }
 
@@ -116,6 +115,7 @@ body{
   height: 53px;
   padding: 10px;
   background-color: #eaeaea;
+  border-bottom: 1px solid #b1b1b1;
 }
 
 #searchbar .form{
@@ -162,6 +162,14 @@ padding: 4px;
   color: #b1b1b1;
 }
 
+#contact-list li a:hover{
+  background-color: #eaeaea;
+}
+
+#contact-list li a.active{
+  background-color: #eaeaea;
+}
+
 #contact-list li a h3{
   color: #000;
 }
@@ -193,6 +201,16 @@ padding: 4px;
   background: url("../img/chat-sfondo.jpg");
   padding: 15px 12%;
   overflow-y: auto;
+}
+
+#messages .chat{
+  display: none;
+  width: 100%;
+  height: 100%;
+}
+
+#messages .chat.active{
+  display: block;
 }
 
 /* css per messaggi sia inviati che ricevuti */
