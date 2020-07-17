@@ -217,7 +217,8 @@ function getTime(){
       var minutes = d.getMinutes();
   }
 
-  return d.getHours() + ":" + d.getMinutes();
+
+  return d.getHours() + ":" + minutes;
 };
 
 
