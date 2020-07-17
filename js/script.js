@@ -13,26 +13,9 @@ function init(){
   selectContact();
 
   // INVIA MESSAGGI
-  $("#send-btn").click(function(){
 
-    if($("#new-msg").val() != ""){ // Il msg viene inviato solo se c'è scritto qualcosa. Non si inviano msg vuoti
-      sendNewMsg(); // funzione che invia un nuovo Messaggio
+  addSendMessageListeners();
 
-      sendReplyMsg(); // funzione che invia una risposta automatica
-
-    }
-  }); // il click sul bottone send triggera la funzione per mandare nuovo Messaggio
-
-  $("#new-msg").keyup(function(event){ // quando c'è focus su #new-msg che è l'input dove si scrivono i msg. e si preme il tasto con keycode 13 (invio) si avvia la funzione sendNewMsg che invia il nuovo messaggio.
-
-    //console.log(event.which);
-
-    if (event.which == 13 && $("#new-msg").val() != "" ) { // aggiunta la condizione per cui se il messaggio è vuoto non viene inviato
-      sendNewMsg(); // funzione che invia un nuovo Messaggio
-
-      sendReplyMsg(); // funzione che invia una risposta automatica
-    }
-  });
 
   // CANCELLA MESSAGGI
 
@@ -42,19 +25,7 @@ function init(){
 
   // SEARCHBAR CONTATTI
 
-
-  // $("#contact-searchbar").keyup(function(event){  // Soluzione con each() e startsWith(). se invece che l'inizio del nome si vuole tener conto di un punto della stringa qualsiasi si può usare .includes()
-  //
-  //     activeSearchbar(); // la funzione si attiva ogni volta che viene premuto un tasto qualsiasi sulla tastiera
-  // });
-
-
-  $("#contact-searchbar").keyup(function(event){ // soluzione con filter
-    conFilter();
-  });
-
-
-
+  addSearchBarListener();
 
 };
 
@@ -87,7 +58,8 @@ function selectContact() {
 
     $(this).addClass("active"); // aggiungo la classe active sul contatto cliccato. Nella lista la classe active cambia solo il background-color. Così rimane visualizzato quale contatto è attualmente attivo
 
-    var idContact = $(this).find(".contact").attr("data-id"); // salvo in una variabile il valore dell'attributo data-id del contatto cliccato che avrà una corrispondenza con un div .chat nel #messages
+    var idContact = $(this).find(".contact").attr("data-id"); // salvo in una variabile il valore dell'attributo data-id del contatto cliccato che avrà una corrispondenza con un div .chat nel #messages. SCRITTURA ALTERNATIVA EQUIVALENTE: $(this).find(".contact").data("id"); prende il valore dell'attributo data-id
+
 
     // istruzioni nella schermata chat
 
@@ -108,7 +80,7 @@ function chatChanges(idContact) { // switch da una chat all'altra istruzione per
 
   $("#messages .chat.active").removeClass("active"); // rimuovo la classe active dalla chat attualmente attiva
 
-  $('#messages .chat[data-id="'+idContact+'"]').addClass("active"); // do classe active alla chat con data-id corrispondente a quello cliccato nella lista contatti. la classe active cambia solo la proprietà display.
+  $('#messages .chat[data-id="'+idContact+'"]').addClass("active"); // do classe active alla chat con data-id corrispondente a quello cliccato nella lista contatti. la classe active cambia solo la proprietà display. Per trovare la chat con il data-id = all'id contatto cliccato si poteva fare un ciclo for che girava tutte le chat e con un if toglieva e aggiungeva la classe active con la condizione chat data-id == cliccato data-id
 }
 
 function activeBarChanges(activeImg, activeName){ // cambia immagine e nome visualizzate nella barra sopra la chat
@@ -116,18 +88,54 @@ function activeBarChanges(activeImg, activeName){ // cambia immagine e nome visu
   $("#active-contact #active-contact-img").attr("src", activeImg);
   $("#active-contact #active-contact-name").text(activeName);
 }
+
+
 // -----------     FUNZIONI CHAT - MESSAGGI
 
-// funzione che invia un nuovo Messaggio
-function sendNewMsg(){
+// funzione che crea due listerner per l'invio dei messaggi: click sul bottone o tasto inviano
 
-  var msgText = $("#new-msg").val(); // salvo il messaggio scritto dall'utente
+function addSendMessageListeners() {
+
+  $("#send-btn").click(function(){ // il click sul bottone send triggera la funzione per mandare nuovo Messaggio e quella per mandare la risposta automatica
+
+    var msgText = $("#new-msg").val();
+
+    if(msgText){ // Il msg viene inviato solo se c'è scritto qualcosa. Non si inviano msg vuoti. Se newMsg è una stringa vuota in booleano diventa falso. se ha anche solo un carattare diventa vero
+
+
+      sendNewMsg(msgText, "send"); // funzione che invia un nuovo Messaggio
+
+      setTimeout(function(){
+        sendNewMsg("ok", "received");
+      }, 5000); // funzione che invia una risposta automatica è la stessa che invia un nuovo messaggio cambiando gli argomenti
+
+    }
+  });
+
+
+  $("#new-msg").keyup(function(event){ // quando c'è focus su #new-msg che è l'input dove si scrivono i msg. e si preme il tasto con keycode 13 (invio) si avvia la funzione sendNewMsg che invia il nuovo messaggio e quella della risposta automatica
+
+    var msgText = $("#new-msg").val();
+
+    if (event.which == 13 && $("#new-msg").val() != "" ) { // aggiunta la condizione per cui se il messaggio è vuoto non viene inviato
+      sendNewMsg(msgText, "send"); // funzione che invia un nuovo Messaggio
+
+      setTimeout(function(){
+        sendNewMsg("ok", "received");
+      }, 5000); // funzione che invia una risposta automatica è la stessa che invia un nuovo messaggio cambiando gli argomenti
+    }
+  });
+
+}
+
+// funzione che invia un nuovo Messaggio
+function sendNewMsg(msgText, direction){
 
   $("#new-msg").val(""); // svuoto il form
 
   var newMsg = $(".template").clone(); // clono il template del messaggi
 
-  newMsg.addClass("send").removeClass("template"); // do classe send al div.template clonato prima. la classe contiene background color green. Rimuovo la classe template in modo che al prossimo messaggio non faccia il clone anche del nuovo messaggio. (clona tutti gli elementi con classe templates)
+  newMsg.addClass(direction).removeClass("template"); // do classe send o received al div.template clonato prima. la classe contiene background color green. Rimuovo la classe template in modo che al prossimo messaggio non faccia il clone anche del nuovo messaggio. (clona tutti gli elementi con classe templates)
 
   newMsg.find(".new-text").text(msgText); // .find() trova nei discendenti del div.template quello con classe .new-text e lo sovrascrive col messaggio dell'utente
 
@@ -138,29 +146,6 @@ function sendNewMsg(){
   $("#messages .active").append(newMsg); // con append il messaggio clonato e modificato viene inserito nell'html
 
 };
-
-
-
-// funzione che manda una risposta automatica ai nuovi messaggi
-function sendReplyMsg(){
-  setTimeout(function(){
-
-    var newMsg = $(".template").clone(); // clono il template del messaggi
-
-
-    newMsg.addClass("received").removeClass("template"); // do classe received al div.template clonato prima. la classe contiene background color white. Rimuovo la classe template in modo che al prossimo messaggio non faccia il clone anche del nuovo messaggio. (clona tutti gli elementi con classe templates)
-
-    newMsg.find(".new-text").text("ok!"); // .find() trova nei discendenti del div.template quello con classe .new-text e lo sovrascrive con "ok" che è la risposta standard automatica
-
-    // Inserimento orario corretto
-
-    newMsg.find(".time").text(getTime); // utilizzo la funzione per stampare l'ora corretta
-
-    $("#messages .active").append(newMsg); // con append il messaggio clonato e modificato viene inserito nell'html
-
-  }, 1000);
-};
-
 
 
 // funzione che restituisce l'ora
@@ -177,18 +162,19 @@ function getTime(){
   return d.getHours() + ":" + d.getMinutes();
 };
 
+
 // -----------  FUNZIONI MENU MESSAGGI
 
 function showOptionPanel(){
   $(document).on("click", ".msg-text .option-down", function(){
     console.log("click");
-    $(this).next(".option-panel").toggle();
+    $(this).next(".option-panel").toggle(); // al posto di next() si può ( ed è meglio) usare .siblings() che cerca tra i "fratelli" cioè gli elementi html allo stesso livello dell'elemento selezionato in questo caso $(this)
   });
 };
 
 function deleteMessage() {
   $(document).on("click", ".option-panel .del-btn", function(){
-    $(this).parents(".message").remove();
+    $(this).parents(".message").remove(); // al posto di parents() si poteva usare anche closest() il più vicino (non compresi i discendenti)
   });
 };
 
@@ -196,11 +182,19 @@ function deleteMessage() {
 
 // ---------      FUNZIONI PER LA SEARCHBAR DEI CONTATTI
 
-// funzione che rende dinamica la searchbar dei contatti
-function activeSearchbar(){
-  $(".contact-name").each(checkName); // la funzione scorre tutti gli elementi con classe contact-name e su ognuno esegue la funzione checkName che verificherà la corrispondenza tra l'input della barra e il nome del contatto
-};
+// creazione di un listener nella barra contatti
 
+function addSearchBarListener(){
+  $("#contact-searchbar").keyup(function(event){
+
+    $(".contact-name").each(checkName); // la funzione scorre tutti gli elementi con classe contact-name e su ognuno esegue la funzione checkName che verificherà la corrispondenza tra l'input della barra e il nome del contatto // Soluzione con each() e startsWith(). se invece che l'inizio del nome si vuole tener conto di un punto della stringa qualsiasi si può usare .includes()
+   //
+
+
+    //conFilter(); funzione equivalente a checkName ma utilizzando Filter
+
+  });
+}
 
 
 // la funzione controlla corrispondenza tra input della barra di ricerca contatti e i nomi contatto
@@ -221,9 +215,9 @@ function checkName(){
 
 // Non ho bisogno di considerare il caso specifico stringa vuota all'input perchè da solo startWith restituisce true con input = stringa vuota.
 
-console.log("input " + input);
-console.log("contact " + contact);
-console.log("starsWith " + contact.startsWith(input));
+// console.log("input " + input);
+// console.log("contact " + contact);
+// console.log("starsWith " + contact.startsWith(input));
 };
 
 
