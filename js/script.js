@@ -1,3 +1,5 @@
+var archivioChat = [];
+
 $(document).ready(init);
 
 
@@ -10,7 +12,9 @@ function init(){
 
   // SELEZIONE CONTATTO CHAT
 
-  selectContact();
+  //selectContact();
+
+  selectContactArray();
 
   // INVIA MESSAGGI
 
@@ -89,6 +93,47 @@ function activeBarChanges(activeImg, activeName){ // cambia immagine e nome visu
   $("#active-contact #active-contact-name").text(activeName);
 }
 
+// alternativa utilizzando un array come archivioChat
+
+function selectContactArray() {
+  $("#contact-list>li>a").click(function(){ // evento sul click di un contatto
+
+      var idChatInChiusura = $("#contact-list>li>a.active").find(".contact").data("id");// prendo l'id della chat attiva che sto per chiudere
+      //salvo il contenuto html della chat in chiusura nella variabile dell'array con indice corrispondente
+
+      archivioChat[idChatInChiusura] = $("#messages .chat.active").html();
+
+      console.log(archivioChat[idChatInChiusura]);
+
+      $("#contact-list>li>a.active").removeClass("active"); // tolgo la classe active da qualsiasi contatto con classe active quindi il contatto precedentemente attivo
+
+      $(this).addClass("active"); // aggiungo la classe active sul contatto cliccato. Nella lista la classe active cambia solo il background-color. Così rimane visualizzato quale contatto è attualmente attivo
+
+      // Prendo l'id del contatto cliccato
+
+      var idChatInApertura = $(this).find(".contact").data("id");
+
+      console.log(archivioChat[idChatInApertura]);
+      // richiamo nell'html il contenuto dell'array alla posizione id del contatto cliccato idChatInApertura. se la chat è nuova e quindi l'archivio a quell'indice è indefinito svuoto semplicemente il contenuto html. altrimenti richiamo l'html della chat salvata in archivio
+
+      if (archivioChat[idChatInApertura] == undefined){
+          $("#messages .chat.active").html("");
+      } else {
+
+        $("#messages .chat.active").html(archivioChat[idChatInApertura]);
+      }
+
+      // istruzioni per la barra sopra la chat con il contatto attualmente attivo
+
+      var activeImg = $(this).find("img[alt=\"img profilo\"]").attr("src");
+
+      var activeName = $(this).find(".contact-name").text();
+
+      activeBarChanges(activeImg, activeName);
+
+  });
+}
+
 
 // -----------     FUNZIONI CHAT - MESSAGGI
 
@@ -161,6 +206,7 @@ function getTime(){
 
   return d.getHours() + ":" + d.getMinutes();
 };
+
 
 
 // -----------  FUNZIONI MENU MESSAGGI
