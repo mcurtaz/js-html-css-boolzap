@@ -174,6 +174,18 @@ padding: 4px;
   color: #000;
 }
 
+#contact-list .last-msg {
+  width: 150px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  color: #b1b1b1;
+}
+
+#contact-list .last-msg.color-send{
+  color: darkgreen;
+}
+
 /* ------------------  PARTE DESTRA ---- CHAT */
 
 #chat{
@@ -236,7 +248,8 @@ padding: 4px;
 #messages .msg-text{
   text-align: left;
   position: relative;
-  max-width: 200px;
+  overflow-wrap: break-word;
+  max-width: 300px;
   display: inline-block;
   padding: 14px 20px 14px 14px;
   border-radius: 10px;

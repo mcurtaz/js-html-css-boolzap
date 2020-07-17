@@ -12,9 +12,9 @@ function init(){
 
   // SELEZIONE CONTATTO CHAT
 
-  //selectContact();
+  selectContact();
 
-  selectContactArray();
+  //selectContactArray();
 
   // INVIA MESSAGGI
 
@@ -152,7 +152,7 @@ function addSendMessageListeners() {
 
       setTimeout(function(){
         sendNewMsg("ok", "received");
-      }, 5000); // funzione che invia una risposta automatica è la stessa che invia un nuovo messaggio cambiando gli argomenti
+      }, 2000); // funzione che invia una risposta automatica è la stessa che invia un nuovo messaggio cambiando gli argomenti
 
     }
   });
@@ -167,7 +167,7 @@ function addSendMessageListeners() {
 
       setTimeout(function(){
         sendNewMsg("ok", "received");
-      }, 5000); // funzione che invia una risposta automatica è la stessa che invia un nuovo messaggio cambiando gli argomenti
+      }, 2000); // funzione che invia una risposta automatica è la stessa che invia un nuovo messaggio cambiando gli argomenti
     }
   });
 
@@ -176,7 +176,9 @@ function addSendMessageListeners() {
 // funzione che invia un nuovo Messaggio
 function sendNewMsg(msgText, direction){
 
-  $("#new-msg").val(""); // svuoto il form
+  if(direction == "send"){
+    $("#new-msg").val(""); // svuoto il form solo se ho mandato un messaggio io. se arriva una risposta automatica no
+  }
 
   var newMsg = $(".template").clone(); // clono il template del messaggi
 
@@ -190,6 +192,17 @@ function sendNewMsg(msgText, direction){
 
   $("#messages .active").append(newMsg); // con append il messaggio clonato e modificato viene inserito nell'html
 
+  // stampo nell'elenco contatti l'ultimo messaggio mandato. cambio il colore a seconda che sia un messaggio mandato o ricevuto
+
+  var contactLastMsg = $("#contact-list .active").find(".last-msg");
+
+  contactLastMsg.text(msgText);
+
+  if(direction == "send"){
+    contactLastMsg.addClass("color-send");
+  } else {
+    contactLastMsg.removeClass("color-send");
+  }
 };
 
 
