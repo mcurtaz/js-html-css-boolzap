@@ -23,7 +23,9 @@ function init(){
 
   // CANCELLA MESSAGGI
 
-  showOptionPanel();
+  //showOptionPanel();
+
+  improvedShowOptionPanel()
 
   deleteMessage();
 
@@ -231,6 +233,23 @@ function showOptionPanel(){
     $(this).next(".option-panel").toggle(); // al posto di next() si può ( ed è meglio) usare .siblings() che cerca tra i "fratelli" cioè gli elementi html allo stesso livello dell'elemento selezionato in questo caso $(this)
   });
 };
+
+function improvedShowOptionPanel(){ // funzione che migliora il tasto che mostra il menu messaggi
+
+  $(document).click(function(event){ // la funzione si scatena su ogni click sull'intera pagina
+
+    var clickedElement = $(event.target); // questa variabile registra dove è avvenuto il click
+
+
+    $(".option-panel").not(clickedElement.siblings(".option-panel")).hide(); // questa istruzione nasconde/chiude tutti i menu messaggi. quindi se il click avviene ovunque nella pagina i menu si chiudono. con not(clickedElement.siblings(".option-panel")) se l'utente ha cliccato su un tasto mostra menu non nascondo il menu associato. not() esclude dalla selezione gli elementi indicati tra le parentesi
+
+    if (clickedElement.hasClass("option-down")){
+
+      clickedElement.siblings(".option-panel").toggle(); // se il click è avvenuto su un tasto mostra menu funzione toggle. (show se è nascosto hide. se era in vista). siccome il comando fuori dall'if non influenza il menu corrispondente all'elemento cliccato l'unica istruzione attiva quando clicco cu un tasto mostra menu è appunto questo toggle
+
+    }
+  })
+}
 
 function deleteMessage() {
   $(document).on("click", ".option-panel .del-btn", function(){

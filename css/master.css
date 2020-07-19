@@ -298,6 +298,7 @@ padding: 4px;
   min-width: 140px;
   border-radius: 10px;
   text-align: center;
+  z-index: 800;
 }
 
 #messages .msg-text .option-panel ul{
