@@ -147,13 +147,17 @@ function addSendMessageListeners() {
 
     var msgText = $("#new-msg").val();
 
+    var idActive = $("#contact-list .active .contact").data("id");
+
+
     if(msgText){ // Il msg viene inviato solo se c'è scritto qualcosa. Non si inviano msg vuoti. Se newMsg è una stringa vuota in booleano diventa falso. se ha anche solo un carattare diventa vero
 
+      // utilizzo id per identificare a quale chat appendere il messaggio. in questo modo la risposta automatica va nella chat giusta anche se durante il setTimeout ho cambiato la chat visualizzata
 
-      sendNewMsg(msgText, "send"); // funzione che invia un nuovo Messaggio
+      sendNewMsg(msgText, "send", idActive); // funzione che invia un nuovo Messaggio
 
       setTimeout(function(){
-        sendNewMsg("ok", "received");
+        sendNewMsg("ok", "received", idActive);
       }, 2000); // funzione che invia una risposta automatica è la stessa che invia un nuovo messaggio cambiando gli argomenti
 
     }
@@ -164,11 +168,16 @@ function addSendMessageListeners() {
 
     var msgText = $("#new-msg").val();
 
+    var idActive = $("#contact-list .active .contact").data("id");
+
     if (event.which == 13 && $("#new-msg").val() != "" ) { // aggiunta la condizione per cui se il messaggio è vuoto non viene inviato
-      sendNewMsg(msgText, "send"); // funzione che invia un nuovo Messaggio
+
+      // utilizzo id per identificare a quale chat appendere il messaggio. in questo modo la risposta automatica va nella chat giusta anche se durante il setTimeout ho cambiato la chat visualizzata
+
+      sendNewMsg(msgText, "send", idActive); // funzione che invia un nuovo Messaggio
 
       setTimeout(function(){
-        sendNewMsg("ok", "received");
+        sendNewMsg("ok", "received", idActive);
       }, 2000); // funzione che invia una risposta automatica è la stessa che invia un nuovo messaggio cambiando gli argomenti
     }
   });
@@ -176,7 +185,7 @@ function addSendMessageListeners() {
 }
 
 // funzione che invia un nuovo Messaggio
-function sendNewMsg(msgText, direction){
+function sendNewMsg(msgText, direction, id){ // utilizzo id per identificare a quale chat appendere il messaggio. in questo modo la risposta automatica va nella chat giusta anche se durante il setTimeout ho cambiato la chat visualizzata
 
   if(direction == "send"){
     $("#new-msg").val(""); // svuoto il form solo se ho mandato un messaggio io. se arriva una risposta automatica no
@@ -192,11 +201,11 @@ function sendNewMsg(msgText, direction){
 
   newMsg.find(".time").text(getTime); // utilizzo la funzione per stampare l'ora corretta
 
-  $("#messages .active").append(newMsg); // con append il messaggio clonato e modificato viene inserito nell'html
+  $("#messages [data-id="+id+"]").append(newMsg); // con append il messaggio clonato e modificato viene inserito nell'html
 
   // stampo nell'elenco contatti l'ultimo messaggio mandato. cambio il colore a seconda che sia un messaggio mandato o ricevuto
 
-  var contactLastMsg = $("#contact-list .active").find(".last-msg");
+  var contactLastMsg = $("#contact-list [data-id="+id+"]").find(".last-msg");
 
   contactLastMsg.text(msgText);
 
