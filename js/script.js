@@ -154,11 +154,17 @@ function addSendMessageListeners() {
 
       // utilizzo id per identificare a quale chat appendere il messaggio. in questo modo la risposta automatica va nella chat giusta anche se durante il setTimeout ho cambiato la chat visualizzata
 
-      sendNewMsg(msgText, "send", idActive); // funzione che invia un nuovo Messaggio
+      // sendNewMsg(msgText, "send", idActive); // funzione che invia un nuovo Messaggio
+      //
+      // setTimeout(function(){
+      //   sendNewMsg("ok", "received", idActive);
+      // }, 5000); // funzione che invia una risposta automatica è la stessa che invia un nuovo messaggio cambiando gli argomenti
 
+      // COMMENTATO FUNZIONI NORMALI. STESSO ESERCIZIO UTILIZZANDO HANDLEBARS
+      sendNewMsgHandlebars(msgText, "send", idActive);
       setTimeout(function(){
-        sendNewMsg("ok", "received", idActive);
-      }, 2000); // funzione che invia una risposta automatica è la stessa che invia un nuovo messaggio cambiando gli argomenti
+        sendNewMsgHandlebars("risposta automatica", "received", idActive);
+      }, 5000);
 
     }
   });
@@ -174,11 +180,19 @@ function addSendMessageListeners() {
 
       // utilizzo id per identificare a quale chat appendere il messaggio. in questo modo la risposta automatica va nella chat giusta anche se durante il setTimeout ho cambiato la chat visualizzata
 
-      sendNewMsg(msgText, "send", idActive); // funzione che invia un nuovo Messaggio
+      //sendNewMsg(msgText, "send", idActive); // funzione che invia un nuovo Messaggio
 
+      // setTimeout(function(){
+      //   sendNewMsg("ok", "received", idActive);
+      // }, 5000); // funzione che invia una risposta automatica è la stessa che invia un nuovo messaggio cambiando gli argomenti
+
+
+
+      // COMMENTATO FUNZIONI NORMALI. STESSO ESERCIZIO UTILIZZANDO HANDLEBARS
+      sendNewMsgHandlebars(msgText, "send", idActive);
       setTimeout(function(){
-        sendNewMsg("ok", "received", idActive);
-      }, 2000); // funzione che invia una risposta automatica è la stessa che invia un nuovo messaggio cambiando gli argomenti
+        sendNewMsgHandlebars("risposta automatica", "received", idActive);
+      }, 5000);
     }
   });
 
@@ -216,6 +230,39 @@ function sendNewMsg(msgText, direction, id){ // utilizzo id per identificare a q
   }
 };
 
+function sendNewMsgHandlebars(msgText, direction, id){
+
+  var template = $("#template-handlebars").html();
+  var compiled = Handlebars.compile(template);
+  var target = $("#messages [data-id="+id+"]");
+
+  var newMsgCompiled = compiled({
+    "newMsg": msgText,
+    "direction": direction,
+    "time": getTime()
+  });
+
+
+  target.append(newMsgCompiled);
+
+  if(direction == "send"){
+    $("#new-msg").val(""); // svuoto il form solo se ho mandato un messaggio io. se arriva una risposta automatica no
+  }
+
+
+
+  // stampo nell'elenco contatti l'ultimo messaggio mandato. cambio il colore a seconda che sia un messaggio mandato o ricevuto
+
+  var contactLastMsg = $("#contact-list [data-id="+id+"]").find(".last-msg");
+
+  contactLastMsg.text(msgText);
+
+  if(direction == "send"){
+    contactLastMsg.addClass("color-send");
+  } else {
+    contactLastMsg.removeClass("color-send");
+  }
+}
 
 // funzione che restituisce l'ora
 function getTime(){
